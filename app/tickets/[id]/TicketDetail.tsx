@@ -13,6 +13,7 @@ import TicketPriority from "@/components/TicketPriority"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import ReactMarkDown from "react-markdown"
+import DeleteButton from "./DeleteButton"
 
 interface Props {
   ticket: Ticket
@@ -60,6 +61,7 @@ const TicketDetail = ({ ticket }: Props) => {
             Update
           </Button>
         </Link>
+        <DeleteButton ticketId={ticket.id} />
         <Link href="/tickets">
           <Button className="text-white-500 w-full min-w-32">Back</Button>
         </Link>
