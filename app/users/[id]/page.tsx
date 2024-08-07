@@ -16,12 +16,6 @@ const EditUser = async ({ params }: Props) => {
     where: {
       id: parseInt(params.id),
     },
-    select: {
-      id: true,
-      name: true,
-      username: true,
-      role: true,
-    },
   })
 
   if (!user) {
