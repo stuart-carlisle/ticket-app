@@ -1,4 +1,6 @@
+import options from "@/app/api/auth/[...nextauth]/options"
 import prisma from "@/prisma/db"
+import { getServerSession } from "next-auth"
 import dynamic from "next/dynamic"
 
 const TicketForm = dynamic(() => import("@/components/TicketForm"), {
@@ -10,6 +12,10 @@ interface Props {
 }
 
 const EditTicket = async ({ params }: Props) => {
+  const session = await getServerSession(options)
+  if (session?.user.role !== "ADMIN" && session?.user.role !== "TECH") {
+    return <p className="text-destructive">Admin or Tech Access Required</p>
+  }
   const ticket = await prisma?.ticket.findUnique({
     where: {
       id: parseInt(params.id),

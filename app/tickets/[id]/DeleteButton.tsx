@@ -24,7 +24,6 @@ const DeleteButton = ({ ticketId }: { ticketId: number }) => {
       setIsDeleting(true)
       await axios.delete("/api/tickets/" + ticketId)
       router.push("/tickets")
-      location.reload()
     } catch (e) {
       setIsDeleting(false)
       setError("Unknown Error Occurred")

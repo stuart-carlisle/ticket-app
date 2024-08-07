@@ -1,4 +1,4 @@
-import { Ticket } from "@prisma/client"
+import { Ticket, User } from "@prisma/client"
 import React from "react"
 import {
   Card,
@@ -14,12 +14,20 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import ReactMarkDown from "react-markdown"
 import DeleteButton from "./DeleteButton"
+import AssignTicket from "@/components/AssignTicket"
+import { getServerSession } from "next-auth"
+import options from "@/app/api/auth/[...nextauth]/options"
 
 interface Props {
   ticket: Ticket
+  users: User[]
 }
 
-const TicketDetail = ({ ticket }: Props) => {
+const TicketDetail = async ({ ticket, users }: Props) => {
+  const session = await getServerSession(options)
+  const authorised =
+    session?.user.role === "ADMIN" || session?.user.role === "TECH"
+  const authorisedAdmin = session?.user.role === "ADMIN"
   return (
     <div className="lg:grid lg:grid-cols-4">
       <Card className="mx-4 mb-4 lg:col-span-3 lg:mr-4">
@@ -55,17 +63,17 @@ const TicketDetail = ({ ticket }: Props) => {
           })}`}
         </CardFooter>
       </Card>
-      <div className="mt-3 mx-4 flex lg:flex-col lg:mx-0 gap-2">
-        <Link href={`/tickets/edit/${ticket.id}`}>
-          <Button className={`mr-3 mb-4 text-white-500 w-full min-w-32`}>
-            Update
-          </Button>
-        </Link>
-        <DeleteButton ticketId={ticket.id} />
-        <Link href="/tickets">
-          <Button className="text-white-500 w-full min-w-32">Back</Button>
-        </Link>
-      </div>
+      {authorised && (
+        <div className="mt-3 mx-4 flex lg:flex-col lg:mx-0 gap-2">
+          {authorisedAdmin && <AssignTicket ticket={ticket} users={users} />}
+          <Link href={`/tickets/edit/${ticket.id}`}>
+            <Button className={`mr-3 text-white-500 w-full min-w-32`}>
+              Update
+            </Button>
+          </Link>
+          <DeleteButton ticketId={ticket.id} />
+        </div>
+      )}
     </div>
   )
 }
