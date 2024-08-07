@@ -22,7 +22,6 @@ const EditUser = async ({ params }: Props) => {
     return <p className="text-destructive">User Not Found</p>
   }
   user.password = ""
-  //Object.assign(user, { password: "" })
 
   return <UserForm user={user} />
 }
