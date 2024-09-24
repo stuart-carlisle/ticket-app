@@ -23,7 +23,7 @@ const DashboardRecentTickets = ({ tickets }: { tickets: TicketWithUser[] }) => {
                 <div className="flex items-center lg:min-h-15" key={ticket.id}>
                   <TicketStatusBadge status={ticket.status} />
                   <div className="ml-4 space-y-1">
-                    <Link href={`ticket/${ticket.id}`}>
+                    <Link href={`tickets/${ticket.id}`}>
                       <p>{ticket.title}</p>
                       <p>{ticket.assignedToUser?.name || "Unassigned"}</p>
                     </Link>
